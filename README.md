@@ -1,16 +1,24 @@
 # Emil Kowalski's Skills, for SwiftUI
 
-An unofficial SwiftUI adaptation of [emilkowalski/skills](https://github.com/emilkowalski/skills) (MIT). It is not written, reviewed or endorsed by Emil.
+[Emil Kowalski](https://emilkowal.ski)'s skills for designers and engineers, adapted for native iOS apps. The design judgment is his, unchanged. Only the implementation is new: SwiftUI in place of CSS, Motion and React.
+
+This is an unofficial adaptation of [emilkowalski/skills](https://github.com/emilkowalski/skills). Emil did not write, review or endorse it.
 
 ## Credit
 
-Every design rule here comes from [Emil Kowalski](https://emilkowal.ski) and his skills for designers and engineers. They are based on his years of building interfaces at Vercel and Linear. If they help you, read the originals at [aiforui.dev/skills](https://aiforui.dev/skills) and [sign up to his newsletter](https://aiforui.dev/newsletter).
+These skills are Emil's work. He wrote them from his years of building interfaces at companies like Vercel and Linear, and they hold the small decisions that make an interface feel right: which curve, how fast, where the motion starts, and when to leave it out. Agents tend to get those decisions wrong, which he explains in [Agents with Taste](https://emilkowal.ski/ui/agents-with-taste).
 
-This port is based on upstream commit [`64eb3de`](https://github.com/emilkowalski/skills/tree/64eb3deb9a5fbfa041faf783e0bc3fd635872e9c). Oren Segal ported it to SwiftUI, and any mistakes in the SwiftUI are Oren's, not Emil's.
+If these help you, go to the source:
+
+- Read the originals, with examples and prompts to try, at [aiforui.dev/skills](https://aiforui.dev/skills).
+- [Sign up to his newsletter](https://aiforui.dev/newsletter) for new skills.
+- For anything that runs in a browser, use his web skills: `npx skills@latest add emilkowalski/skills`.
+
+I'm [Oren Segal](https://github.com/OrenSegal), and I ported them to SwiftUI from upstream commit [`64eb3de`](https://github.com/emilkowalski/skills/tree/64eb3deb9a5fbfa041faf783e0bc3fd635872e9c). Every place this port departs from his rules is listed in [CONVERSION.md](CONVERSION.md) and [FLAGGED.md](FLAGGED.md). Any mistake in the SwiftUI is mine, not his, so please report it [here](https://github.com/OrenSegal/emil-design-swiftui/issues) rather than on his repo.
 
 ## What it is
 
-The design judgment is his: when to animate, why, which curve, how fast, where motion starts, and when to leave it out. The web implementation (CSS, Motion, React, the DOM) has been replaced with native SwiftUI. Rules that only exist because of the browser are not translated. They are listed in [FLAGGED.md](FLAGGED.md) and at the end of each skill.
+Every rule keeps Emil's reasoning and his original values. The web implementation has been replaced with native SwiftUI. Rules that only exist because of the browser are not translated. They are listed in [FLAGGED.md](FLAGGED.md) and at the end of each skill, so you can see what was left out and why.
 
 Target: iOS 18 and Swift 6. APIs newer than iOS 18, like Liquid Glass, only appear behind `#available` with a fallback.
 
@@ -26,10 +34,10 @@ The skill names match Emil's originals, so cross-references keep working. If you
 
 ## What changed from the web version
 
-- **Kept as is:** every rule about frequency, purpose, easing, duration, origin, interruption, asymmetry and restraint, with the original values.
+- **Kept as is:** every rule about frequency, purpose, easing, duration, origin, interruption, asymmetry and restraint, with Emil's original values.
 - **One new rule:** leave system motion alone. Sheets, navigation pushes, menus and popovers already move the way iOS users expect, and they already respect Reduce Motion. Emil's curves are for the components you build.
 - **Reframed:** some rules hold but for a different reason natively. For example, an interrupted spring hands its velocity to the new target, so springs play the role CSS transitions play on the web. A timing curve keeps running and stacks with the new one, which is why curves are the wrong choice for anything the user can reverse. [CONVERSION.md](CONVERSION.md) lists every mapping.
-- **Not ported:** `animate-expo` (React Native) and `ask-sonner` (a React library). Their native-relevant ideas live in `animate`, `gestures` and `emil-design-eng`.
+- **Not ported:** `animate-expo` (React Native) and `ask-sonner` (a React library). The ideas from them that apply natively live in `animate`, `gestures` and `emil-design-eng`.
 - **Unchanged:** `write-swift` was already native.
 
 ## Checking the code
@@ -46,7 +54,7 @@ The second typechecks every Swift snippet in the ported skills against the iOS 1
 tools/check-snippets.sh $(ls skills/*/*.md | grep -v /write-swift/) *.md
 ```
 
-Run it outside any sandbox, since the Swift macro plugin server needs its own. Three blocks in `write-swift` fail on purpose. That skill is Emil's original, unchanged, and its examples are fragments that call made-up helpers.
+Run it outside any sandbox, since the Swift macro plugin server needs its own. Three blocks in `write-swift` fail on purpose. That skill is Emil's original, unchanged. Its examples are fragments that call made-up helpers.
 
 ## Reference
 

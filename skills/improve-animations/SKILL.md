@@ -5,6 +5,8 @@ description: Survey an iOS app's SwiftUI and UIKit animation and motion code (wi
 
 # Improving Animations
 
+> Adapted from Emil Kowalski's [`improve-animations`](https://github.com/emilkowalski/skills/tree/64eb3deb9a5fbfa041faf783e0bc3fd635872e9c/skills/improve-animations) skill. The design judgment is his. The SwiftUI is this port's, so report problems with it to [emil-design-swiftui](https://github.com/OrenSegal/emil-design-swiftui/issues), not to Emil.
+
 ## Initial Response
 
 When this skill is first invoked without a specific question, respond only with:

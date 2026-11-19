@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Ask Emil (SwiftUI)
 
+> Adapted from Emil Kowalski's [`ask-emil`](https://github.com/emilkowalski/skills/tree/64eb3deb9a5fbfa041faf783e0bc3fd635872e9c/skills/ask-emil) skill. The design judgment is his. The SwiftUI is this port's, so report problems with it to [emil-design-swiftui](https://github.com/OrenSegal/emil-design-swiftui/issues), not to Emil.
+
 Before stating what a skill does or recommending one, read that skill's SKILL.md: the summaries here are for orientation only. Then recommend **one** skill (or one short sequence) for the user's situation, say why in a sentence, and name the skill they'd reach for next. Don't list the whole map back at them.
 
 A **flow** is a path through the skills. Most UI work travels one **main flow**, from idea to shipped. Some skills are **upkeep** you run on a codebase that already exists, some are **references** that sit underneath everything, and a few stand alone.

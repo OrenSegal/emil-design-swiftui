@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Picking The Right Component
 
+> Adapted from Emil Kowalski's [`pick-ui-library`](https://github.com/emilkowalski/skills/tree/64eb3deb9a5fbfa041faf783e0bc3fd635872e9c/skills/pick-ui-library) skill. The design judgment is his. The SwiftUI is this port's, so report problems with it to [emil-design-swiftui](https://github.com/OrenSegal/emil-design-swiftui/issues), not to Emil.
+
 ## Initial Response
 
 When this skill is first invoked without a specific question, respond only with:

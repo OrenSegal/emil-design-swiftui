@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Learning Taste
 
+> Adapted from Emil Kowalski's [`learn-taste`](https://github.com/emilkowalski/skills/tree/64eb3deb9a5fbfa041faf783e0bc3fd635872e9c/skills/learn-taste) skill. The design judgment is his. The SwiftUI is this port's, so report problems with it to [emil-design-swiftui](https://github.com/OrenSegal/emil-design-swiftui/issues), not to Emil.
+
 Every correction a user makes is taste the agent didn't have. If it isn't written down, the next session makes the same mistake and the user corrects it again. This skill finds those corrections, turns each one into a rule with its reason, and writes it where the next agent will read it.
 
 It does ONE thing: write rules. It never changes view code, and it never adds a rule the user didn't express.
