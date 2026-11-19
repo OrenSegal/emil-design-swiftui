@@ -1,0 +1,27 @@
+name: check
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  structure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: tools/validate.sh
+
+  snippets:
+    # Typechecks every ```swift block against the iOS 18 simulator SDK in Swift 6 mode.
+    # Needs an Xcode whose SDK knows the iOS 26 APIs the skills gate behind #available.
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use the newest installed Xcode
+        run: |
+          newest=$(ls -d /Applications/Xcode*.app | sort -V | tail -1)
+          sudo xcode-select -s "$newest"
+          xcodebuild -version
+      - name: Typecheck snippets
+        # write-swift is Emil's original, unchanged; its examples call made-up helpers on purpose.
+        run: tools/check-snippets.sh $(ls skills/*/*.md | grep -v '/write-swift/') *.md
