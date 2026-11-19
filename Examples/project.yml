@@ -1,0 +1,18 @@
+name: Probe
+options:
+  deploymentTarget:
+    iOS: "18.0"
+settings:
+  SWIFT_VERSION: "6.0"
+  GENERATE_INFOPLIST_FILE: YES
+  CODE_SIGNING_ALLOWED: NO
+targets:
+  Probe:
+    type: application
+    platform: iOS
+    sources:
+      - Probe
+      - path: ../tools/Motion.swift
+    settings:
+      PRODUCT_BUNDLE_IDENTIFIER: dev.emil-design-swiftui.probe
+      INFOPLIST_KEY_UILaunchScreen_Generation: YES
