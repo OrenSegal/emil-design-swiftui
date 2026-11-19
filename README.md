@@ -54,7 +54,9 @@ The second typechecks every Swift snippet in the ported skills against the iOS 1
 tools/check-snippets.sh $(ls skills/*/*.md | grep -v /write-swift/) *.md
 ```
 
-Run it outside any sandbox, since the Swift macro plugin server needs its own. Three blocks in `write-swift` fail on purpose. That skill is Emil's original, unchanged. Its examples are fragments that call made-up helpers.
+A weekly job (`tools/upstream-diff.sh`) fails when Emil's repo moves past the pinned commit and lists the files he changed, so the port can follow him.
+
+Run the snippet check outside any sandbox, since the Swift macro plugin server needs its own. Three blocks in `write-swift` fail on purpose. That skill is Emil's original, unchanged. Its examples are fragments that call made-up helpers.
 
 ## Reference
 

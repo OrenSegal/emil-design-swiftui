@@ -1,0 +1,14 @@
+name: upstream
+
+# Fails (and emails the repo owner) when emilkowalski/skills moves past the commit this port is based on.
+on:
+  schedule:
+    - cron: "0 9 * * 1"
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: tools/upstream-diff.sh
