@@ -5,6 +5,8 @@
 #   - every upstream skill is either ported here or listed as not ported
 #   - every ported skill (all but write-swift) ends with a "## No native equivalent" section
 #   - every relative Markdown link and ../<skill>/FILE.md reference resolves
+#   - the upstream commit is the same in upstream-diff.sh, the README and every skill's link
+#   - a skill works once installed: no link leaves skills/, and Motion.swift is linked where used
 set -u
 cd "$(dirname "$0")/.."
 fail=0
@@ -13,6 +15,18 @@ err() { echo "FAIL $*"; fail=1; }
 # Upstream skills at commit 64eb3de. Update when re-syncing with emilkowalski/skills.
 UPSTREAM="animate animate-expo animation-performance animation-vocabulary apple-design ask-emil ask-sonner break-ui choreograph emil-design-eng find-animation-opportunities gestures improve-animations learn-taste mobile-native pick-ui-library prototype remove-animations review-animations write-swift"
 NOT_PORTED="animate-expo ask-sonner"
+
+# One upstream commit, everywhere it is written down: tools/upstream-diff.sh holds it, and the README
+# and each skill's "Adapted from" link have to point at the same one.
+PIN=$(sed -n 's/^PIN=${PIN:-\([0-9a-f]\{40\}\)}$/\1/p' tools/upstream-diff.sh)
+if [ -z "$PIN" ]; then
+  err "tools/upstream-diff.sh: no 40-character PIN found"
+else
+  stale=$(grep -rnoE 'emilkowalski/skills/tree/[0-9a-f]+' README.md skills | grep -v "tree/$PIN")
+  [ -n "$stale" ] && { echo "$stale" | sed "s/^/FAIL upstream link is not at pinned commit ${PIN:0:7}: /"; fail=1; }
+  grep -q "\`${PIN:0:7}\`" README.md || err "README.md does not name the pinned commit ${PIN:0:7}"
+  grep -q "^# Upstream skills at commit ${PIN:0:7}\." tools/validate.sh || err "tools/validate.sh: the UPSTREAM comment is not at ${PIN:0:7}"
+fi
 
 for s in $UPSTREAM; do
   if [[ " $NOT_PORTED " == *" $s "* ]]; then

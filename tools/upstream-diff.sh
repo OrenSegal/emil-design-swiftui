@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Lists what changed in emilkowalski/skills since the commit this port is based on.
 # Exit 0: up to date. Exit 1: upstream moved (the changed files are printed). Exit 2: couldn't check.
-# After porting the changes, update PIN here, UPSTREAM in validate.sh, and the commit link in README.md.
+# After porting the changes, update PIN here, UPSTREAM in validate.sh, the commit link in README.md,
+# and the "Adapted from" link at the top of each skills/*/SKILL.md. tools/validate.sh fails until they agree.
 set -euo pipefail
 PIN=${PIN:-64eb3deb9a5fbfa041faf783e0bc3fd635872e9c}
 REPO=emilkowalski/skills
