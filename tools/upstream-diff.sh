@@ -9,7 +9,7 @@ head=$(git ls-remote "https://github.com/$REPO" HEAD | cut -f1) || exit 2
 [ -n "$head" ] || exit 2
 if [ "$head" = "$PIN" ]; then echo "upstream: up to date at ${PIN:0:7}"; exit 0; fi
 echo "upstream moved: ${PIN:0:7} -> ${head:0:7} (https://github.com/$REPO/compare/${PIN:0:7}...${head:0:7})"
-curl -fsS "https://api.github.com/repos/$REPO/compare/$PIN...$head" \
+curl -fsS ${GITHUB_TOKEN:+-H "Authorization: Bearer $GITHUB_TOKEN"} "https://api.github.com/repos/$REPO/compare/$PIN...$head" \
   | ruby -E UTF-8 -rjson -e 'JSON.parse(STDIN.read)["files"].each { |f| puts "  #{f["status"]}\t#{f["filename"]}" }' \
   || echo "  (could not list files)"
 exit 1
