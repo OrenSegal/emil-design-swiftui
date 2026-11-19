@@ -1,6 +1,6 @@
 ---
 name: prototype
-description: Build multiple genuinely different SwiftUI versions of an iOS UI piece you describe, behind a debug-only in-app variant picker and #Preview variants, so you can flip through them live on the Simulator or a device and promote the one that feels right.
+description: "Build multiple genuinely different SwiftUI versions of an iOS UI piece you describe, behind a debug-only in-app variant picker and #Preview variants, so you can flip through them live on the Simulator or a device and promote the one that feels right."
 disable-model-invocation: true
 ---
 

@@ -27,9 +27,19 @@ for f in skills/*/SKILL.md; do
   dir=$(basename "$(dirname "$f")")
   [[ " $UPSTREAM " == *" $dir "* ]] || err "$dir is not an upstream skill (add it to UPSTREAM if intentional)"
   [ "$(head -1 "$f")" = "---" ] || { err "$f: no front matter"; continue; }
-  fm=$(awk 'NR>1 && /^---$/{exit} NR>1{print}' "$f")
-  name=$(printf '%s\n' "$fm" | sed -n 's/^name: *//p')
-  desc=$(printf '%s\n' "$fm" | sed -n 's/^description: *//p')
+  # Parse with a real YAML parser, the way installers do: an unquoted " #" or ": " silently
+  # truncates the description or drops the skill. Prints name<TAB>description, or ERROR.
+  parsed=$(ruby -E UTF-8 -ryaml -e '
+    raw = File.read(ARGV[0]); fm = raw[/\A---\n(.*?)\n---/m, 1]
+    begin
+      h = YAML.safe_load(fm); d = h["description"].to_s
+      plain = raw[/^description: (.*)$/, 1].to_s
+      if !plain.start_with?("\"", "\x27") && d != plain then puts "ERROR description truncated by YAML (#{d.size}/#{plain.size} chars): quote it"
+      else puts "#{h["name"]}\t#{d}" end
+    rescue => e then puts "ERROR #{e.message}" end' "$f")
+  case "$parsed" in (ERROR*) err "$f: front matter: ${parsed#ERROR }"; continue ;; esac
+  name=${parsed%%$'\t'*}
+  desc=${parsed#*$'\t'}
   [ "$name" = "$dir" ] || err "$f: name '$name' != folder '$dir'"
   [[ "$name" =~ ^[a-z0-9-]{1,64}$ ]] || err "$f: name '$name' must be lowercase-hyphen, <= 64 chars"
   [ -n "$desc" ] || err "$f: empty description"

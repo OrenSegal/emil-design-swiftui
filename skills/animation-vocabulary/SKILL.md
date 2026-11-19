@@ -1,6 +1,6 @@
 ---
 name: animation-vocabulary
-description: Reverse-lookup glossary that turns a vague description of an iOS / SwiftUI animation or motion effect into its exact term, and the SwiftUI API that produces it ("the bouncy thing when a popover opens" → Pop in, `.transition(.scale(scale:).combined(with: .opacity))` with a bouncy spring; "the iOS rubber-band scroll" → Rubber-banding, ScrollView's default). Use when the user asks "what's it called when…" or "which SwiftUI modifier does…", or describes a motion effect without knowing its name and wants the right word to prompt an AI or designer with. For naming an effect, not designing or building one.
+description: "Reverse-lookup glossary that turns a vague description of an iOS / SwiftUI animation or motion effect into its exact term, and the SwiftUI API that produces it (\"the bouncy thing when a popover opens\" → Pop in, `.transition(.scale(scale:).combined(with: .opacity))` with a bouncy spring; \"the iOS rubber-band scroll\" → Rubber-banding, ScrollView's default). Use when the user asks \"what's it called when…\" or \"which SwiftUI modifier does…\", or describes a motion effect without knowing its name and wants the right word to prompt an AI or designer with. For naming an effect, not designing or building one."
 ---
 
 # Animation Vocabulary
