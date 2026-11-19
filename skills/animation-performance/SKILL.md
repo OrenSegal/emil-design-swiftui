@@ -19,6 +19,8 @@ A diagnostic skill. It does ONE thing: make motion land every frame. It does not
 
 This skill is a rewrite, not a translation. Emil's web original is built on the browser pipeline (layout, paint, composite, compositor threads, `will-change`). SwiftUI has a different pipeline, so the mechanics here are native. The method is his: name the cause, measure before fixing, and don't trust a fast machine.
 
+The Swift in this skill uses this port's shared motion tokens (`.emilEaseOut()`, `Spring.emilUI`, `.buttonStyle(.pressable)` and the rest). They live in [`tools/Motion.swift`](https://raw.githubusercontent.com/OrenSegal/emil-design-swiftui/main/tools/Motion.swift), which is not installed with the skill, so copy that file into the app first.
+
 ## Why This Matters
 
 Imagine [Sonner](https://sonner.emilkowal.ski/) running at 30fps. Same easing, same durations, same code. Nobody would have cared. (Web-origin example; the lesson transfers.) Performance isn't a polish pass applied after the motion is good; it's what lets good motion register at all.

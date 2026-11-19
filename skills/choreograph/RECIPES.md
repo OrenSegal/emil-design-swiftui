@@ -290,7 +290,7 @@ struct SignupSteps: View {
 }
 ```
 
-**The first reversal needs the new direction.** The leaving view has to slide the *new* way (Motion solves this by putting `custom` on both `AnimatePresence` and the child). In SwiftUI a removed view animates with the transition it carried when it was last rendered, so if `direction` and `step` change in the same update, the first Back slides the leaving step the old way. That is why `go` sets `direction` first and changes the step from a `Task { @MainActor in … }`, one update later. Both behaviours were checked with the [probe app](../../Examples/README.md) on an iOS 26.5 simulator. Still tap Continue, Continue, Back under Slow Animations in your own layout.
+**The first reversal needs the new direction.** The leaving view has to slide the *new* way (Motion solves this by putting `custom` on both `AnimatePresence` and the child). In SwiftUI a removed view animates with the transition it carried when it was last rendered, so if `direction` and `step` change in the same update, the first Back slides the leaving step the old way. That is why `go` sets `direction` first and changes the step from a `Task { @MainActor in … }`, one update later. Both behaviours were checked with the [probe app](https://github.com/OrenSegal/emil-design-swiftui/blob/main/Examples/README.md) on an iOS 26.5 simulator. Still tap Continue, Continue, Back under Slow Animations in your own layout.
 
 For small containers or similar views, swap the 110% slide for a crossfade with an 8 pt shift and a light `.blur`. The eyes barely move and the change still reads.
 

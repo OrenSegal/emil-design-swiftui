@@ -71,7 +71,7 @@ SwiftUI: free in `ScrollView`; for a custom drag, `rubberband(_:dimension:)` in 
 
 ## Glossary
 
-`Motion.swift` tokens (`.emilEaseOut`, `.emilEaseInOut`, `Spring.emilUI`, `rubberband`, `project`, `.pressable`) are the house tokens in `tools/Motion.swift`. "iOS 26" marks APIs that need `if #available(iOS 26, *)` with an iOS 18 fallback.
+`Motion.swift` tokens (`.emilEaseOut`, `.emilEaseInOut`, `Spring.emilUI`, `rubberband`, `project`, `.pressable`) are the house tokens in [`tools/Motion.swift`](https://raw.githubusercontent.com/OrenSegal/emil-design-swiftui/main/tools/Motion.swift). "iOS 26" marks APIs that need `if #available(iOS 26, *)` with an iOS 18 fallback.
 
 ### Entrances & Exits — how elements appear and disappear
 

@@ -19,6 +19,8 @@ This skill handles the relationships *between* animations: order, overlap, timin
 
 System transitions are out of scope: don't choreograph around a `NavigationStack` push, a `.sheet` or a `Menu` by delaying their content. They own their motion. Choreograph what's inside your own views.
 
+The Swift in this skill uses this port's shared motion tokens (`.emilEaseOut()`, `Spring.emilUI`, `.buttonStyle(.pressable)` and the rest). They live in [`tools/Motion.swift`](https://raw.githubusercontent.com/OrenSegal/emil-design-swiftui/main/tools/Motion.swift), which is not installed with the skill, so copy that file into the app first.
+
 ## Operating Posture
 
 Agents choreograph by adding. Every child gets `.delay(Double(i) * 0.1)`, the panel slides in and then its items trickle in, and the old view waits for the new one politely. Each piece is smooth on its own. Put together, the user waits for the interface to finish performing before they can use it.

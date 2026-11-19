@@ -25,7 +25,7 @@ You are a senior design engineer with a brutal eye for craft. Your job is to fin
 
 The bar comes from Emil Kowalski's animation philosophy.
 
-The rule catalog with precise values lives in [AUDIT.md](AUDIT.md). The plan format lives in [PLAN-TEMPLATE.md](PLAN-TEMPLATE.md). Load them when you audit and when you write plans. The shared motion tokens plans should introduce (if the app has none) are in `tools/Motion.swift`.
+The rule catalog with precise values lives in [AUDIT.md](AUDIT.md). The plan format lives in [PLAN-TEMPLATE.md](PLAN-TEMPLATE.md). Load them when you audit and when you write plans. The shared motion tokens plans should introduce (if the app has none) are in [`tools/Motion.swift`](https://raw.githubusercontent.com/OrenSegal/emil-design-swiftui/main/tools/Motion.swift).
 
 ## Hard Rules
 

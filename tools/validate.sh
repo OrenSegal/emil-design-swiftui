@@ -65,5 +65,22 @@ links=$(find . -name '*.md' -not -path './.git/*' | while IFS= read -r md; do
 done)
 [ -n "$links" ] && { echo "$links"; fail=1; }
 
+# The installer copies skills/<dir> and nothing else, so a skill has to work without the rest of
+# this repo: a relative link may not climb out of skills/, and a file whose code uses the shared
+# tokens has to say where tools/Motion.swift can be fetched from.
+MOTION_URL="https://raw.githubusercontent.com/OrenSegal/emil-design-swiftui/main/tools/Motion.swift"
+TOKENS='emil(EaseOut|EaseInOut|Drawer|Ease|Press|UI|Momentum)|\.pressable|rubberband\(|project\(velocity'
+for md in skills/*/*.md; do
+  grep -o '\]([^)]*)' "$md" | sed 's/^](//; s/)$//' | while IFS= read -r link; do
+    case "$link" in (../../*) echo "FAIL $md: link $link leaves skills/ and breaks once the skill is installed" ;; esac
+  done | grep . && fail=1
+done
+for d in skills/*/; do
+  [ "$d" = skills/write-swift/ ] && continue
+  if grep -qE "$TOKENS" "$d"*.md && ! grep -qF "]($MOTION_URL)" "${d}SKILL.md"; then
+    err "${d}SKILL.md: the skill uses Motion.swift tokens but never links $MOTION_URL"
+  fi
+done
+
 [ $fail -eq 0 ] && echo "validate: OK"
 exit $fail

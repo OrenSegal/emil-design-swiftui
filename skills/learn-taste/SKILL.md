@@ -12,6 +12,8 @@ Every correction a user makes is taste the agent didn't have. If it isn't writte
 
 It does ONE thing: write rules. It never changes view code, and it never adds a rule the user didn't express.
 
+The Swift in this skill uses this port's shared motion tokens (`.emilEaseOut()`, `Spring.emilUI`, `.buttonStyle(.pressable)` and the rest). They live in [`tools/Motion.swift`](https://raw.githubusercontent.com/OrenSegal/emil-design-swiftui/main/tools/Motion.swift), which is not installed with the skill, so copy that file into the app first.
+
 ## Hard Rules
 
 1. **Only the user's taste.** Every rule traces back to something the user said, edited, or confirmed. Never add a rule because it seems like good practice. That's your taste, and your taste is what the user was correcting.

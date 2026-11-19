@@ -9,7 +9,7 @@ description: Build drag, swipe, and sheet interactions in SwiftUI that track the
 
 How to build gestures that feel physical. A gesture is direct manipulation: while the finger is down, the UI is the finger; the moment it lifts, physics takes over. Every rule below follows from that split.
 
-Shared tokens (`.emilEaseOut()`, `.emilDrawer()`, `Spring.emilUI`, `Spring.emilMomentum`, `project(velocity:)`, `rubberband(_:dimension:)`) live in `tools/Motion.swift`.
+Shared tokens (`.emilEaseOut()`, `.emilDrawer()`, `Spring.emilUI`, `Spring.emilMomentum`, `project(velocity:)`, `rubberband(_:dimension:)`) live in [`tools/Motion.swift`](https://raw.githubusercontent.com/OrenSegal/emil-design-swiftui/main/tools/Motion.swift).
 
 ## First decision: build it, or use what the system ships?
 
