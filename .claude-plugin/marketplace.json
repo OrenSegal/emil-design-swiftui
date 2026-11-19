@@ -1,0 +1,14 @@
+{
+  "name": "emil-design-swiftui",
+  "owner": { "name": "Oren Segal" },
+  "metadata": { "description": "Unofficial SwiftUI adaptation of Emil Kowalski's skills (emilkowalski/skills, MIT)." },
+  "plugins": [
+    {
+      "name": "emil-design-swiftui",
+      "source": "./",
+      "description": "Unofficial SwiftUI adaptation of Emil Kowalski's design-engineering and animation skills for native iOS apps. Credit for the design judgment is Emil's; he did not write, review or endorse this port.",
+      "version": "0.1.0",
+      "license": "MIT"
+    }
+  ]
+}
