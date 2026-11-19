@@ -3,7 +3,7 @@
 # Each block is compiled on its own, together with tools/Motion.swift (the shared tokens).
 # A block whose first line is `// fragment` is skipped (use sparingly: one-line modifier examples only).
 # usage: tools/check-snippets.sh skills/**/*.md
-# Note: needs to run outside the Claude Code sandbox (the macro plugin server uses sandbox-exec).
+# Note: needs to run outside any sandbox (the macro plugin server uses sandbox-exec).
 set -u
 HERE=${0:A:h}
 SDK=$(xcrun --sdk iphonesimulator --show-sdk-path 2>/dev/null)

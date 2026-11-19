@@ -1,6 +1,6 @@
 # Emil Kowalski's Skills, for SwiftUI
 
-[Emil Kowalski](https://emilkowal.ski)'s skills for designers and engineers, adapted for native iOS apps. The design judgment is his, unchanged. Only the implementation is new: SwiftUI in place of CSS, Motion and React.
+[Emil Kowalski](https://emilkowal.ski)'s skills for designers and engineers, adapted for native iOS apps. The design judgment is his. What's new is the implementation: SwiftUI in place of CSS, Motion and React.
 
 This is an unofficial adaptation of [emilkowalski/skills](https://github.com/emilkowalski/skills). Emil did not write, review or endorse it.
 
@@ -14,11 +14,11 @@ If these help you, go to the source:
 - [Sign up to his newsletter](https://aiforui.dev/newsletter) for new skills.
 - For anything that runs in a browser, use his web skills: `npx skills@latest add emilkowalski/skills`.
 
-I'm [Oren Segal](https://github.com/OrenSegal), and I ported them to SwiftUI from upstream commit [`64eb3de`](https://github.com/emilkowalski/skills/tree/64eb3deb9a5fbfa041faf783e0bc3fd635872e9c). Every place this port departs from his rules is listed in [CONVERSION.md](CONVERSION.md) and [FLAGGED.md](FLAGGED.md). Any mistake in the SwiftUI is mine, not his, so please report it [here](https://github.com/OrenSegal/emil-design-swiftui/issues) rather than on his repo.
+I'm [Oren Segal](https://github.com/OrenSegal), and I ported them to SwiftUI from upstream commit [`64eb3de`](https://github.com/emilkowalski/skills/tree/64eb3deb9a5fbfa041faf783e0bc3fd635872e9c). Where this port departs from his rules, [CONVERSION.md](CONVERSION.md) and [FLAGGED.md](FLAGGED.md) say how and why. Any mistake in the SwiftUI is mine, not his, so please report it [here](https://github.com/OrenSegal/emil-design-swiftui/issues) rather than on his repo.
 
 ## What it is
 
-Every rule keeps Emil's reasoning and his original values. The web implementation has been replaced with native SwiftUI. Rules that only exist because of the browser are not translated. They are listed in [FLAGGED.md](FLAGGED.md) and at the end of each skill, so you can see what was left out and why.
+Emil's reasoning and his values carry over wherever the platform allows. A few rules needed a native reason or a native number, and those changes are listed below. The web implementation has been replaced with native SwiftUI. Rules that only exist because of the browser are not translated. They are listed in [FLAGGED.md](FLAGGED.md) and at the end of each skill, so you can see what was left out and why.
 
 Target: iOS 18 and Swift 6. APIs newer than iOS 18, like Liquid Glass, only appear behind `#available` with a fallback.
 
@@ -36,7 +36,7 @@ The skill names match Emil's originals, so cross-references keep working. If you
 
 - **Kept as is:** every rule about frequency, purpose, easing, duration, origin, interruption, asymmetry and restraint, with Emil's original values.
 - **One new rule:** leave system motion alone. Sheets, navigation pushes, menus and popovers already move the way iOS users expect, and they already respect Reduce Motion. Emil's curves are for the components you build.
-- **Reframed:** some rules hold but for a different reason natively. For example, an interrupted spring hands its velocity to the new target, so springs play the role CSS transitions play on the web. A timing curve keeps running and stacks with the new one, which is why curves are the wrong choice for anything the user can reverse. A small [probe app](Examples/README.md) confirms this on a simulator. [CONVERSION.md](CONVERSION.md) lists every mapping.
+- **Reframed:** some rules hold but for a different reason natively. For example, an interrupted spring hands its velocity to the new target, so springs play the role CSS transitions play on the web. A timing curve keeps running and stacks with the new one, which is why curves are the wrong choice for anything the user can reverse. Sonner's swipe-to-dismiss threshold of 0.11 px/ms is an average over the whole drag, while SwiftUI reports the release velocity, so the native threshold is 500 pt/s. A small [probe app](Examples/README.md) confirms this on a simulator. [CONVERSION.md](CONVERSION.md) lists every mapping.
 - **Not ported:** `animate-expo` (React Native) and `ask-sonner` (a React library). The ideas from them that apply natively live in `animate`, `gestures` and `emil-design-eng`.
 - **Unchanged:** `write-swift` was already native.
 
@@ -48,7 +48,7 @@ Two checks run on every push (`.github/workflows/check.yml`). The first checks s
 tools/validate.sh
 ```
 
-The second typechecks every Swift snippet in the ported skills against the iOS 18 SDK in Swift 6 mode, debug code included:
+The second typechecks every Swift snippet in the ported skills with an iOS 18 deployment target in Swift 6 mode, debug code included:
 
 ```bash
 tools/check-snippets.sh $(ls skills/*/*.md | grep -v /write-swift/) *.md

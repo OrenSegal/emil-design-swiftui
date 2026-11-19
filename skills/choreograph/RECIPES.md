@@ -281,12 +281,16 @@ struct SignupSteps: View {
     private func go(_ delta: Int) {
         let forward: CGFloat = delta > 0 ? 1 : -1
         direction = layoutDirection == .rightToLeft ? -forward : forward
-        withAnimation(.spring(duration: 0.5, bounce: 0)) { step += delta }
+        // The leaving view keeps the transition from its last render, so let it render
+        // the new direction before the step changes. Changing both at once slides it the old way.
+        Task { @MainActor in
+            withAnimation(.spring(duration: 0.5, bounce: 0)) { step += delta }
+        }
     }
 }
 ```
 
-**Verify the first reversal.** Tap Continue, Continue, Back under Slow Animations. The leaving view needs the *new* direction (Motion solves this by putting `custom` on both `AnimatePresence` and the child). In SwiftUI a removed view animates with the transition it carried when it was last rendered; whether `direction` set in the same action reaches the leaving view depends on whether both changes land in one update. If the first Back makes the leaving step slide the wrong way, render the new direction first and change the step on the next update — for example, set `direction`, then run the `withAnimation` from `Task { @MainActor in … }` — and check again.
+**The first reversal needs the new direction.** The leaving view has to slide the *new* way (Motion solves this by putting `custom` on both `AnimatePresence` and the child). In SwiftUI a removed view animates with the transition it carried when it was last rendered, so if `direction` and `step` change in the same update, the first Back slides the leaving step the old way. That is why `go` sets `direction` first and changes the step from a `Task { @MainActor in … }`, one update later. Both behaviours were checked with the [probe app](../../Examples/README.md) on an iOS 26.5 simulator. Still tap Continue, Continue, Back under Slow Animations in your own layout.
 
 For small containers or similar views, swap the 110% slide for a crossfade with an 8 pt shift and a light `.blur`. The eyes barely move and the change still reads.
 
