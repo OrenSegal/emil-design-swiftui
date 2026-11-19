@@ -8,7 +8,7 @@
 #   - the upstream commit is the same in upstream-diff.sh, the README and every skill's link
 #   - a skill works once installed: no link leaves skills/, and Motion.swift is linked where used
 set -u
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")/.." || exit 1
 fail=0
 err() { echo "FAIL $*"; fail=1; }
 

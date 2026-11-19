@@ -4,6 +4,10 @@ on:
   push:
   pull_request:
 
+# Both jobs only read the checkout.
+permissions:
+  contents: read
+
 jobs:
   structure:
     runs-on: ubuntu-latest
