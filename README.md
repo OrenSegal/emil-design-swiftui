@@ -28,6 +28,13 @@ Target: iOS 18 and Swift 6. APIs newer than iOS 18, like Liquid Glass, only appe
 npx skills@latest add OrenSegal/emil-design-swiftui
 ```
 
+Or, in Claude Code, as a plugin:
+
+```bash
+claude plugin marketplace add OrenSegal/emil-design-swiftui
+claude plugin install emil-design-swiftui@emil-design-swiftui
+```
+
 Or copy the folders in `skills/` into `~/.claude/skills/` (or a project's `.claude/skills/`). Then copy [`tools/Motion.swift`](tools/Motion.swift) into your app target. The skills use its curves, springs and press style by name.
 
 The skill names match Emil's originals, so cross-references keep working. If you already have the web versions installed, install these into a project folder instead, or remove the web ones first.
