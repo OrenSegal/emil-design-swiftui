@@ -19,6 +19,8 @@ Emil's original is a fix-it skill for web apps on phones: remove, one by one, th
 
 It does not design motion (that's `animate`) or build drags and sheets (that's `gestures`).
 
+The Swift in this skill uses this port's shared motion tokens (`.emilEaseOut()`, `Spring.emilUI`, `.buttonStyle(.pressable)` and the rest). They live in [`tools/Motion.swift`](https://raw.githubusercontent.com/OrenSegal/emil-design-swiftui/main/tools/Motion.swift), which is not installed with the skill, so copy that file into the app first.
+
 ## Operating Posture
 
 You are a senior design engineer who has shipped sheets and gesture-driven UI to real iPhones. You know the Simulator is not a phone: it has no real touch latency, no haptics, no ProMotion, and a keyboard you type into with a Mac.

@@ -5,14 +5,28 @@
 #   - every upstream skill is either ported here or listed as not ported
 #   - every ported skill (all but write-swift) ends with a "## No native equivalent" section
 #   - every relative Markdown link and ../<skill>/FILE.md reference resolves
+#   - the upstream commit is the same in upstream-diff.sh, the README and every skill's link
+#   - a skill works once installed: no link leaves skills/, and Motion.swift is linked where used
 set -u
-cd "$(dirname "$0")/.."
+cd "$(dirname "$0")/.." || exit 1
 fail=0
 err() { echo "FAIL $*"; fail=1; }
 
 # Upstream skills at commit 64eb3de. Update when re-syncing with emilkowalski/skills.
 UPSTREAM="animate animate-expo animation-performance animation-vocabulary apple-design ask-emil ask-sonner break-ui choreograph emil-design-eng find-animation-opportunities gestures improve-animations learn-taste mobile-native pick-ui-library prototype remove-animations review-animations write-swift"
 NOT_PORTED="animate-expo ask-sonner"
+
+# One upstream commit, everywhere it is written down: tools/upstream-diff.sh holds it, and the README
+# and each skill's "Adapted from" link have to point at the same one.
+PIN=$(sed -n 's/^PIN=${PIN:-\([0-9a-f]\{40\}\)}$/\1/p' tools/upstream-diff.sh)
+if [ -z "$PIN" ]; then
+  err "tools/upstream-diff.sh: no 40-character PIN found"
+else
+  stale=$(grep -rnoE 'emilkowalski/skills/tree/[0-9a-f]+' README.md skills | grep -v "tree/$PIN")
+  [ -n "$stale" ] && { echo "$stale" | sed "s/^/FAIL upstream link is not at pinned commit ${PIN:0:7}: /"; fail=1; }
+  grep -q "\`${PIN:0:7}\`" README.md || err "README.md does not name the pinned commit ${PIN:0:7}"
+  grep -q "^# Upstream skills at commit ${PIN:0:7}\." tools/validate.sh || err "tools/validate.sh: the UPSTREAM comment is not at ${PIN:0:7}"
+fi
 
 for s in $UPSTREAM; do
   if [[ " $NOT_PORTED " == *" $s "* ]]; then
@@ -67,6 +81,23 @@ links=$(find . -name '*.md' -not -path './.git/*' | while IFS= read -r md; do
   done
 done)
 [ -n "$links" ] && { echo "$links"; fail=1; }
+
+# The installer copies skills/<dir> and nothing else, so a skill has to work without the rest of
+# this repo: a relative link may not climb out of skills/, and a file whose code uses the shared
+# tokens has to say where tools/Motion.swift can be fetched from.
+MOTION_URL="https://raw.githubusercontent.com/OrenSegal/emil-design-swiftui/main/tools/Motion.swift"
+TOKENS='emil(EaseOut|EaseInOut|Drawer|Ease|Press|UI|Momentum)|\.pressable|rubberband\(|project\(velocity'
+for md in skills/*/*.md; do
+  grep -o '\]([^)]*)' "$md" | sed 's/^](//; s/)$//' | while IFS= read -r link; do
+    case "$link" in (../../*) echo "FAIL $md: link $link leaves skills/ and breaks once the skill is installed" ;; esac
+  done | grep . && fail=1
+done
+for d in skills/*/; do
+  [ "$d" = skills/write-swift/ ] && continue
+  if grep -qE "$TOKENS" "$d"*.md && ! grep -qF "]($MOTION_URL)" "${d}SKILL.md"; then
+    err "${d}SKILL.md: the skill uses Motion.swift tokens but never links $MOTION_URL"
+  fi
+done
 
 [ $fail -eq 0 ] && echo "validate: OK"
 exit $fail

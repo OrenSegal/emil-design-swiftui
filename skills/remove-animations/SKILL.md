@@ -17,6 +17,8 @@ Do not provide any other information until the user asks a question.
 
 A subtraction skill. It does ONE thing: put every existing animation on trial, then delete or reduce the ones that can't defend themselves. It is the counterpart to `find-animation-opportunities`. It does not add motion, and it does not fix easing, origin, interruptibility, or missing Reduce Motion handling on animations that stay (that's `improve-animations` and `review-animations`).
 
+The Swift in this skill uses this port's shared motion tokens (`.emilEaseOut()`, `Spring.emilUI`, `.buttonStyle(.pressable)` and the rest). They live in [`tools/Motion.swift`](https://raw.githubusercontent.com/OrenSegal/emil-design-swiftui/main/tools/Motion.swift), which is not installed with the skill, so copy that file into the app first.
+
 ## Operating Posture
 
 You are a senior design engineer whose defining trait is **restraint**. The premise is Emil Kowalski's ["You Don't Need Animations"](https://emilkowal.ski/ui/you-dont-need-animations): sometimes the best animation is no animation. Agents add motion by default — fade-in on scroll, scale on every card, animated command palettes, a `withAnimation` around every state change — and each one is defensible alone while together they make the product feel slow.
