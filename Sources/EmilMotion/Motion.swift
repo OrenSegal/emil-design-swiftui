@@ -1,6 +1,8 @@
 // Motion.swift — the house motion tokens every skill in this repo refers to.
 // Add the EmilMotion Swift package, or copy this file into your app target (drop the `public`s if you copy). Deployment target: iOS 18, Swift 6.
-// The curves are Emil Kowalski's web curves, ported 1:1 via timingCurve.
+// Springs first: on iOS, anything the user can touch, drag or reverse uses `.spring(.emilUI)` / `.spring(.emilMomentum)`.
+// The timing curves below are Emil Kowalski's web curves, ported 1:1 via timingCurve, for fixed one-shot motion
+// (fades, small reveals) that nobody grabs mid-flight.
 import SwiftUI
 
 extension Animation {
@@ -12,7 +14,7 @@ extension Animation {
     public static func emilEaseInOut(_ duration: TimeInterval = 0.3) -> Animation {
         .timingCurve(0.77, 0, 0.175, 1, duration: duration)
     }
-    /// iOS-like drawer curve (from Ionic). cubic-bezier(0.32, 0.72, 0, 1)
+    /// Drawer-style curve (from Ionic, a web framework; close to, but not, what UIKit ships). Custom drawers only: system sheets keep theirs. cubic-bezier(0.32, 0.72, 0, 1)
     public static func emilDrawer(_ duration: TimeInterval = 0.5) -> Animation {
         .timingCurve(0.32, 0.72, 0, 1, duration: duration)
     }

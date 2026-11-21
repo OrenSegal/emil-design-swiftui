@@ -87,7 +87,7 @@ struct EditorialVariant: View {
     var body: some View { Text("Editorial").font(.largeTitle.weight(.semibold)) }
 }
 struct PlayfulVariant: View {
-    var body: some View { Text("Playful").font(.title2.weight(.heavy)) }
+    var body: some View { Text("Playful").font(.title2.weight(.semibold)) }
 }
 
 struct PricingCardPrototype: View {

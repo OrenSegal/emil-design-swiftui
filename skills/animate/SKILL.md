@@ -32,7 +32,8 @@ Never present motion options as a menu. Make the call, state the reasoning in on
 
 1. **Run the sequence in order.** Steps 1 and 2 gate everything. Don't reach for a curve before you know whether it animates at all.
 2. **No approximated values.** Every curve, duration, and spring config comes from the codebase's existing tokens or the tables below. Never invent `.timingCurve(0.4, 0, 0.2, 1, ...)` because it looks familiar.
-3. **Extend the codebase's tokens, don't fork them.** If an `Animation` extension or a duration scale already exists, use it. This repo's tokens live in `tools/Motion.swift` (`.emilEaseOut()`, `.emilEaseInOut()`, `.emilDrawer()`, `.emilPress`, `Spring.emilUI`, `Spring.emilMomentum`). Adding a parallel system is a defect.
+3. **Springs first on iOS.** If the user can touch, drag, toggle or reverse it, use `.spring(.emilUI)` or `.smooth` / `.snappy`, not a timing curve. Curves are for fixed one-shots.
+4. **Extend the codebase's tokens, don't fork them.** If an `Animation` extension or a duration scale already exists, use it. This repo's tokens live in `tools/Motion.swift` (`.emilEaseOut()`, `.emilEaseInOut()`, `.emilDrawer()`, `.emilPress`, `Spring.emilUI`, `Spring.emilMomentum`). Adding a parallel system is a defect.
 4. **Reduce Motion ships with the animation**, not as a follow-up. SwiftUI does not turn your custom animations off for you; you branch on `accessibilityReduceMotion` yourself.
 5. **Cheapest tool that works.** Don't drop to Core Animation for a fade, and don't build a `keyframeAnimator` for something one `withAnimation` does.
 6. **Don't retime system motion.** `NavigationStack` push/pop, `.sheet`, `.fullScreenCover`, `.popover`, `Menu`, `Picker`, `.confirmationDialog`, `.alert`, the keyboard and `TabView` already have motion users know by muscle memory, and they already follow Reduce Motion. Everything below is for *custom* components.
@@ -143,7 +144,7 @@ import SwiftUI
 // The three curves, as defined in tools/Motion.swift. Use the tokens; don't retype these.
 let entering: Animation = .emilEaseOut()   // timingCurve(0.23, 1, 0.32, 1): strong ease-out for UI
 let morphing: Animation = .emilEaseInOut() // timingCurve(0.77, 0, 0.175, 1): on-screen movement
-let drawer: Animation = .emilDrawer()      // timingCurve(0.32, 0.72, 0, 1): iOS-like drawer (Ionic)
+let drawer: Animation = .emilDrawer()      // timingCurve(0.32, 0.72, 0, 1): drawer-style curve from Ionic (web); custom drawers only
 ```
 
 Need a curve that isn't here? Take it from [easing.dev](https://easing.dev/) or [easings.co](https://easings.co/) — their cubic-bézier control points drop straight into `.timingCurve(_:_:_:_:duration:)`. Don't hand-roll one.

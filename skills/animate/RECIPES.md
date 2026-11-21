@@ -6,6 +6,8 @@ Curves are the `.emilEaseOut()`, `.emilEaseInOut()`, `.emilDrawer()`, `.emilEase
 
 Several of these components exist in the system. **Check first**: `Menu`, `Picker`, `.popover`, `.sheet` with `.presentationDetents`, `.alert`, `.confirmationDialog`, `DisclosureGroup` and `.help()` already have motion, accessibility and Reduce Motion handled, and you shouldn't retime them. The recipes below are for the cases where you've decided a custom component is right.
 
+**iPhone first.** Tooltip is an iPad/Mac pointer pattern, so on iPhone skip it. Toast, tab indicator and dropdown panel are web-born patterns: an iPhone app should reach for `Menu`, a segmented `Picker`, `TabView` or a system banner/alert before these. Springs are the default for anything the user can reverse; the timing-curve recipes below are for one-shots.
+
 ---
 
 ## Button press
@@ -70,7 +72,7 @@ struct SortPanel: View {
                     : .scale(scale: 0.95, anchor: .topTrailing).combined(with: .opacity))
             }
         }
-        .animation(.emilEaseOut(0.2), value: isOpen)
+        .animation(.smooth(duration: 0.25), value: isOpen)
     }
 }
 ```
@@ -79,7 +81,7 @@ The `anchor:` is the whole point — the panel should look like it came out of t
 
 ---
 
-## Tooltip
+## Tooltip (iPad / Mac pointer only)
 
 Touch has no tooltips. On iPad with a pointer and on Mac, `.help("…")` is the system tooltip and its timing belongs to the system. Build a custom hover hint only when the content needs more than `.help` can show: same shape as a popover, faster.
 
@@ -166,7 +168,7 @@ struct ConfirmCard: View {
                     : .scale(scale: 0.96).combined(with: .opacity))
             }
         }
-        .animation(.emilEaseOut(0.25), value: isPresented)
+        .animation(.smooth(duration: 0.3), value: isPresented)
     }
 }
 ```
@@ -199,7 +201,7 @@ struct BottomDrawer<Content: View>: View {
                     .transition(reduceMotion ? .opacity : .move(edge: .bottom))
             }
         }
-        .animation(.emilDrawer(0.5), value: isOpen)
+        .animation(.smooth(duration: 0.4), value: isOpen)
     }
 }
 ```
@@ -212,7 +214,7 @@ Add drag and it becomes a gesture problem — see **Drag to dismiss** below.
 
 ## Toast
 
-There's no system toast on iOS, so this one is custom.
+There's no system toast on iOS, so this one is custom. Keep it above the home indicator (this recipe stays in the safe area), keep it short-lived and non-blocking, and for errors the user must act on, use an `.alert` instead.
 
 ```swift
 import SwiftUI
@@ -406,6 +408,8 @@ struct HoldToDeleteButton: View {
 
 ## Tab indicator with a color transition
 
+Only for a custom segmented control. For switching content, use `TabView` or a segmented `Picker`; both already animate and carry the right traits.
+
 Timing individual color transitions across a tab list never quite lands. Clip instead.
 
 Duplicate the tab row. Style the copy as the active state — different background, different text color. Mask the copy so only the active tab shows, and animate the mask on change:
@@ -437,7 +441,7 @@ struct ClippedTabs: View {
                     .accessibilityHidden(true)
             }
             .coordinateSpace(.named("tabs"))
-            .animation(reduceMotion ? nil : .emilEaseInOut(0.25), value: selection)
+            .animation(reduceMotion ? nil : .smooth(duration: 0.3), value: selection)
     }
 
     private func tabRow(active: Bool) -> some View {

@@ -6,7 +6,7 @@
 | Numbers jitter when they change    | `.monospacedDigit()`; animated: `.contentTransition(.numericText(value:))` |
 | Large headings look off            | Tighter tracking on custom display sizes, e.g. `.tracking(-0.5)`. SF already tracks by size, so leave system styles alone |
 | Body text looks awkward            | Cap the line at about 65 characters with `.frame(maxWidth:)`, scaled with `@ScaledMetric` so it grows with Dynamic Type |
-| Button feels unresponsive          | `ButtonStyle` with `.scaleEffect(configuration.isPressed ? 0.97 : 1)` (`.buttonStyle(.pressable)` in `tools/Motion.swift`) |
+| Button feels unresponsive          | Custom card/tile/chip: `ButtonStyle` with `.scaleEffect(configuration.isPressed ? 0.97 : 1)` (`.buttonStyle(.pressable)` in `tools/Motion.swift`). Rows and text buttons: system highlight or opacity dim, no scale |
 | Avatar squished into an oval       | Fixed `.frame(width:height:)` plus `.clipShape(.circle)`; give the text `.layoutPriority` instead of the image |
 | Gradient fade has a visible edge   | Use an eased gradient: extra `Gradient.Stop`s placed along an ease curve |
 | Transition still feels off         | `.transition(.blurReplace)` (it also scales: `.opacity` under Reduce Motion), or a 2pt `.blur(radius:)` during the change |

@@ -43,6 +43,116 @@ People select tools based on the overall experience, not just functionality. Goo
 
 This one is new for native. iOS ships motion users have in their muscle memory: the `NavigationStack` push, `.sheet`, `.popover`, `Menu`, `.confirmationDialog`, the keyboard, and scroll deceleration. That motion already follows Reduce Motion. **Do not retime or re-curve system components.** Everything below about curves and durations applies to the components *you* build. The native version of "use a proper primitive instead of hand-rolling a dropdown" is "use the system component instead of hand-rolling one".
 
+**Benchmark against Apple's own apps, not just web ones.** Raycast, Sonner and Family are web or third-party references. On iOS, check the feel against Notes (grouped lists, swipe actions, large titles), Maps and Wallet (sheet detents and momentum), Music (now-playing morph), Health (restrained color, big numbers) and Messages (spring insertion, haptics). If your component moves or looks unlike the equivalent in those, you have a reason or a bug.
+
+### The platform already has a look. Start from it.
+
+Motion is only half of feeling native. Before reaching for shadows, strokes, fixed colors or fixed padding, use what the system draws:
+
+| Instead of (web card habit) | Use |
+| --- | --- |
+| `Color.white` / `Color(hex:)` page and card fills | `Color(.systemBackground)`, `Color(.secondarySystemBackground)`, `.background(.fill.tertiary)`; they adapt to dark mode and Increase Contrast |
+| A drop shadow or `strokeBorder` to separate a card | Grouped `List` / `Form` sections, a secondary background, or `Color(.separator)` for a hairline |
+| Fixed `.padding(16)` on every screen edge | Default `.padding()`, `.scenePadding()` or `.safeAreaPadding()`, so margins follow the device and size class |
+| A hand-built header with a bold 28 pt title | `NavigationStack` + `.navigationTitle` (large title that collapses on scroll) and `.toolbar` |
+| Custom translucent white or black fills | Materials (`.regularMaterial`, `.bar`); on iOS 26, `.glassEffect()` behind `#available`, with the material as the iOS 18 fallback |
+| `Color.black.opacity(0.4)` scrims behind your own overlays | Only for custom overlays. System `.sheet` and `.fullScreenCover` dim for you |
+| Hover lift with a shadow | Pointer only: `.hoverEffect`. On iPhone, nothing |
+
+```swift
+import SwiftUI
+
+// Native by default: grouped list, large title, system fills, Dynamic Type styles, no custom chrome.
+struct SettingsScreen: View {
+    @State private var notifications = true
+
+    var body: some View {
+        NavigationStack {
+            List {
+                Section("Account") {
+                    Label("Profile", systemImage: "person.crop.circle")
+                    Toggle("Notifications", isOn: $notifications)
+                }
+                Section {
+                    Button("Sign Out", role: .destructive) {}
+                }
+            }
+            .navigationTitle("Settings")
+        }
+    }
+}
+```
+
+### Cut the slop
+
+Adapted from [unslop-ui](https://github.com/felipebasurto/unslop-ui) by Felipe Basurto (MIT), rewritten for SwiftUI. Before polishing a screen, delete what it doesn't need. Each rule has a reason; apply the reason, not the letter.
+
+**Copy**
+
+| Slop | Rule |
+| --- | --- |
+| Small uppercase or letter-spaced label above a heading (`.textCase(.uppercase)` on your own `Text`) | Delete it: the heading already says what the section is. System `Section` headers keep their own styling |
+| `01 //` numbering | Delete unless the order is real (steps in a flow) |
+| Subtitle under every title, blurb under every row | Keep only if it states a fact the title doesn't |
+| Captions that narrate the UI ("Tap the button below", "This chart shows") | Delete. Empty states and errors get one or two plain sentences, no "Oops!" |
+| Chains like `"Synced · 3 items · Updated now"` | Keep the one fact the user acts on |
+| Placeholder that repeats the label; helper text that restates the field | Delete. Keep constraints the user can't guess ("At least 12 characters") |
+| Staccato slogans ("Finance. Simplified.") | One plain sentence, or delete |
+| Section titles, card titles, captions inside a screen | Five words or fewer |
+
+**Decoration: the real-state test.** An element must render from a value or condition. A fixed `"New"` badge, a pulsing `Circle()` next to "Live" that is always on, or "Synced" that nothing checks is decoration: bind it to real state or delete it. The same goes for decorative SF Symbols and symbols in tinted rounded boxes (delete the box too). Keep icons that are the control, carry meaning the text doesn't, or sit in a toolbar or menu where every item has one.
+
+**Charts (Swift Charts)**
+
+- Title with the neutral subject ("Monthly revenue"), not "Bar chart of...". No instruction text ("Tap a bar for details").
+- One encoding per quantity: don't print the value on every bar and also draw the axis. A KPI keeps its figure, one direction cue and the comparison period.
+- Scaffolding: hide the frame, keep gridlines hairline and light (`AxisGridLine().foregroundStyle(.quaternary)`), no shadows or background fills.
+- Label series directly (`.annotation` at the last point) instead of a legend, unless there are more than four series.
+
+**Surface**
+
+- No hue-to-hue gradients, gradient text, colored glows or blurred color blobs. Solid system fill, solid text, a `Color(.separator)` hairline.
+- Spacing from one scale: 4, 8, 12, 16, 20, 24, 32, 40, 48. Siblings doing the same job get the same value. Space inside a group is smaller than space between groups.
+- Weights `.regular`, `.medium`, `.semibold`. Skip `.heavy` and `.black`: hierarchy comes from size and color.
+- Motion that doesn't explain anything goes: a card that scales on hover, a spring with overshoot on a plain toggle, a bounce on an icon.
+
+**Guardrails.** Never delete an `accessibilityLabel` or `accessibilityHint`, and if you cut the only visible text on a control, move it to the label. Don't invent numbers, benefits or integrations the code can't show. Customer counts, ratings and testimonials are not yours to cut or rewrite: list them as tasks. Keep anything that earns its place (real state, real order, legal text) and say why.
+
+```swift
+import SwiftUI
+
+// Before: eyebrow, subtitle that repeats the title, status chain, always-on dot, tinted icon box.
+struct SyncHeaderBefore: View {
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            Text("SYNC").font(.caption2.weight(.heavy)).tracking(2).foregroundStyle(.secondary)
+            Text("Sync status").font(.title2.bold())
+            Text("Here you can see the status of your sync").font(.subheadline).foregroundStyle(.secondary)
+            HStack {
+                Circle().fill(.green).frame(width: 8, height: 8)
+                Text("Live · Synced · 3 items").font(.footnote)
+            }
+        }
+    }
+}
+
+// After: the one fact, driven by real state.
+struct SyncHeaderAfter: View {
+    let pendingItems: Int
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("Sync").font(.title2.weight(.semibold))
+            if pendingItems > 0 {
+                Text("^[\(pendingItems) item](inflect: true) waiting to sync")
+                    .font(.footnote)
+                    .foregroundStyle(.secondary)
+            }
+        }
+    }
+}
+```
+
 ## Review Format (Required)
 
 When reviewing UI code, you MUST use a markdown table with Before/After columns. Do NOT use a list with "Before:" and "After:" on separate lines. Always output an actual markdown table like this:
@@ -105,7 +215,7 @@ struct InboxView: View {
 
             // Pointer/touch path for an occasional surface: a standard animation is fine.
             Button("Filter") {
-                withAnimation(.emilEaseOut()) { showsFilter.toggle() }
+                withAnimation(.smooth(duration: 0.25)) { showsFilter.toggle() }
             }
         }
     }
@@ -130,6 +240,8 @@ If the purpose is just "it looks cool" and the user will see it often, don't ani
 
 ### 3. What easing should it use?
 
+Start with the spring question: can the user touch, drag, reverse or re-trigger it? Yes → a spring (see Springs first, below). The decision tree here is for the rest.
+
 Is the element entering or exiting?
   Yes → ease-out (starts fast, feels responsive)
   No →
@@ -147,7 +259,7 @@ Is the element entering or exiting?
 // The tokens in tools/Motion.swift. Use them; don't retype the curves.
 let entering: Animation = .emilEaseOut()   // timingCurve(0.23, 1, 0.32, 1), 0.2 s: strong ease-out for UI
 let morphing: Animation = .emilEaseInOut() // timingCurve(0.77, 0, 0.175, 1), 0.3 s: on-screen movement
-let drawer: Animation = .emilDrawer()      // timingCurve(0.32, 0.72, 0, 1), 0.5 s: iOS-like drawer (Ionic)
+let drawer: Animation = .emilDrawer()      // timingCurve(0.32, 0.72, 0, 1), 0.5 s: drawer-style curve from Ionic (web); custom drawers only
 let color: Animation = .emilEase()         // timingCurve(0.25, 0.1, 0.25, 1), 0.2 s: CSS `ease`
 ```
 
@@ -157,7 +269,7 @@ Each takes the duration as a parameter: `.emilEaseOut(0.16)`.
 
 **Easing curve resources:** Don't create curves from scratch. Use [easing.dev](https://easing.dev/) or [easings.co](https://easings.co/) to find stronger custom variants of standard easings. Their cubic-bezier values paste straight into `timingCurve`.
 
-**Springs or curves?** Since iOS 17, SwiftUI's default animation is a spring, and springs are the right tool for anything the user can touch or interrupt (see Spring Animations). Use the custom curves above for fixed, duration-shaped UI motion that is never grabbed mid-flight: fades, press feedback, small reveals.
+**Springs first, curves second.** Since iOS 17, SwiftUI's default animation is a spring, and that is the house default here: reach for `.spring(.emilUI)` (no overshoot) or the `.smooth` / `.snappy` presets for anything the user can touch, drag, toggle or reverse, and for anything that moves on screen. The custom curves above are the exception, for fixed, duration-shaped one-shots that are never grabbed mid-flight: fades, color changes, small reveals. If you are unsure which to use, use a spring.
 
 ### 4. How fast should it be?
 
@@ -251,7 +363,7 @@ When a SwiftUI animation is interrupted by a new state change, nothing jumps, bu
 
 ### Buttons must feel responsive
 
-Scale to 0.97 while pressed. `ButtonStyle`'s `configuration.isPressed` flips on touch-*down*, so the feedback is instant and the UI feels like it is truly listening to the user.
+**Match the press to the control.** Custom tiles, cards and chips scale to 0.97 while pressed. List rows and `NavigationLink` rows use the system background highlight, and text-only or plain buttons dim to about 0.6 opacity (what UIKit does), so don't scale those. `.bordered` and `.borderedProminent` already have their own press feedback. The rest of this section is for the scale case. `ButtonStyle`'s `configuration.isPressed` flips on touch-*down*, so the feedback is instant and the UI feels like it is truly listening to the user.
 
 ```swift
 struct PressScaleStyle: ButtonStyle {
@@ -279,7 +391,7 @@ struct SaveButton: View {
 }
 ```
 
-This applies to any pressable element: rows, cards, chips. The scale should be subtle (0.95–0.98). Put the gesture on a real `Button` (with a style) rather than `onTapGesture`, so VoiceOver, Full Keyboard Access, and the button trait come for free. System styles (`.borderedProminent`, `.bordered`) already have press feedback, so don't stack another scale on them.
+This applies to custom pressable elements: cards, tiles, chips (not rows, see above). The scale should be subtle (0.95–0.98). Put the gesture on a real `Button` (with a style) rather than `onTapGesture`, so VoiceOver, Full Keyboard Access, and the button trait come for free. System styles (`.borderedProminent`, `.bordered`) already have press feedback, so don't stack another scale on them.
 
 ### Never animate from scale 0
 
@@ -302,7 +414,7 @@ struct Badge: View {
                     // Good:
                     .transition(reduceMotion ? .opacity : .scale(scale: 0.95).combined(with: .opacity))
             }
-            Button("Toggle") { withAnimation(.emilEaseOut()) { isVisible.toggle() } }
+            Button("Toggle") { withAnimation(.smooth(duration: 0.25)) { isVisible.toggle() } }
         }
     }
 }
@@ -321,7 +433,7 @@ struct OverflowMenu: View {
         // Trigger sits top-trailing, so the panel grows from the top-trailing corner.
         ZStack(alignment: .topTrailing) {
             Button {
-                withAnimation(.emilEaseOut(0.18)) { isOpen.toggle() }
+                withAnimation(.smooth(duration: 0.25)) { isOpen.toggle() }
             } label: {
                 Image(systemName: "ellipsis.circle").font(.title2)
                     .frame(minWidth: 44, minHeight: 44) // 44 pt target around the glyph
@@ -610,7 +722,7 @@ struct MaskedTabs: View {
     private func row(active: Bool) -> some View {
         HStack(spacing: 0) {
             ForEach(tabs, id: \.self) { tab in
-                Button { withAnimation(.emilEaseInOut(0.25)) { selected = tab } } label: {
+                Button { withAnimation(.smooth(duration: 0.3)) { selected = tab } } label: {
                     Text(tab)
                         .font(.subheadline.weight(.medium))
                         .foregroundStyle(active ? Color.white : Color.secondary)
@@ -897,7 +1009,7 @@ On the web, touch devices fire hover on tap, so hover effects need a media-query
 
 ## The Sonner Principles (Building Loved Components)
 
-These principles come from building Sonner (a React toast library) and apply to any component, SwiftUI included:
+These principles come from building Sonner (a React toast library). They are about craft, not about toasts: apply them to any component, and on iPhone prefer the system component when one exists.
 
 1. **Developer experience is key.** No setup ceremony. In Sonner, you insert `<Toaster />` once and call `toast()` from anywhere. The SwiftUI shape of that is one overlay at the root, plus an action in the environment that any view can call. The less friction to adopt, the more people will use it.
 
