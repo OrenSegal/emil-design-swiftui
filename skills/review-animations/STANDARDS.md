@@ -37,7 +37,7 @@ Decision order:
 
 **Never `.easeIn` on UI** (same for `UIView.AnimationOptions.curveEaseIn` and `CAMediaTimingFunctionName.easeIn`). It starts slow, delaying the exact moment the user is watching. Ease-out at 200 ms *feels* faster than ease-in at 200 ms.
 
-The built-in `.easeOut` / `.easeInOut` / `.default` are too weak for deliberate motion, as are CSS's built-ins. Use the strong curves from `tools/Motion.swift`:
+Springs are the default for anything touchable or reversible (`.spring(.emilUI)`, `.smooth`, `.snappy`); the curves below are for fixed one-shots. The built-in `.easeOut` / `.easeInOut` / `.default` are too weak for deliberate motion, as are CSS's built-ins. Use the strong curves from `tools/Motion.swift`:
 
 ```swift
 // Emil's three web curves, ported 1:1 with timingCurve (same values as tools/Motion.swift).

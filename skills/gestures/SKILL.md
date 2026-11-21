@@ -323,7 +323,7 @@ There's no SwiftUI equivalent of Motion's `drag` / `dragConstraints` / `dragElas
 
 ## Sheets without springs: the Vaul curve
 
-Vaul mimics the iOS sheet with pure CSS to stay small: `cubic-bezier(0.32, 0.72, 0, 1)` over **500 ms**. That is `.emilDrawer()` in Motion.swift. The curve is extremely steep at the start, which is what lets a 500 ms duration still feel snappy while it lands with a spring-like gentle settle. On iOS you rarely need it (the system sheet *is* the original). Use it for a custom edge-attached panel opened by a button, where there's no gesture velocity to carry. Two rules from it:
+Vaul (a web library) mimics the iOS sheet with pure CSS to stay small: `cubic-bezier(0.32, 0.72, 0, 1)` over **500 ms**. That is `.emilDrawer()` in Motion.swift. The curve is extremely steep at the start, which is what lets a 500 ms duration still feel snappy while it lands with a spring-like gentle settle. On iOS you rarely need it (the system sheet *is* the original). Use it for a custom edge-attached panel opened by a button, where there's no gesture velocity to carry. Two rules from it:
 
 - A **small floating drawer** (not touching the screen edge) should override to ~200 ms. The 500 ms iOS timing only reads right on a full-width, edge-attached sheet. Vaul's override curve is `cubic-bezier(0.165, 0.84, 0.44, 1)`:
 
@@ -424,6 +424,8 @@ Mobile has a sense the web doesn't. Used sparingly, haptics become the thing tha
 | Something snaps home, a sheet detent catches, a drag commits | `.impact(weight: .light)` |
 | A heavy object lands, a destructive action fires | `.impact(weight: .medium)` |
 | Operation succeeded or failed | `.success` / `.error` |
+
+System controls already fire their own haptics (`Toggle`, `Picker` wheels, `Stepper`, sheet detents, pull-to-refresh, swipe actions), so don't add one on top. Add yours only to custom controls that stand in for those moments: a custom toggle or segmented control (`.selection`), a custom sheet detent (`.impact(weight: .light)`), a custom destructive confirm (`.impact(weight: .medium)`), save/submit outcomes (`.success` / `.error`).
 
 Three rules, and they're absolute:
 

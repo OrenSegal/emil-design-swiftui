@@ -14,7 +14,7 @@ If these help you, go to the source:
 - [Sign up to his newsletter](https://aiforui.dev/newsletter) for new skills.
 - For anything that runs in a browser, use his web skills: `npx skills@latest add emilkowalski/skills`.
 
-I'm [Oren Segal](https://github.com/OrenSegal), and I ported them to SwiftUI from upstream commit [`64eb3de`](https://github.com/emilkowalski/skills/tree/64eb3deb9a5fbfa041faf783e0bc3fd635872e9c). Where this port departs from his rules, [CONVERSION.md](CONVERSION.md) and [FLAGGED.md](FLAGGED.md) say how and why. Any mistake in the SwiftUI is mine, not his, so please report it [here](https://github.com/OrenSegal/emil-design-swiftui/issues) rather than on his repo.
+I'm [Oren Segal](https://github.com/OrenSegal), and I ported them to SwiftUI from upstream commit [`64eb3de`](https://github.com/emilkowalski/skills/tree/64eb3deb9a5fbfa041faf783e0bc3fd635872e9c). Where this port departs from his rules, [CONVERSION.md](CONVERSION.md) and [FLAGGED.md](FLAGGED.md) say how and why. The "Cut the slop" section in `emil-design-eng` adapts rules from [unslop-ui](https://github.com/felipebasurto/unslop-ui) by Felipe Basurto (MIT) to SwiftUI. Any mistake in the SwiftUI is mine, not his, so please report it [here](https://github.com/OrenSegal/emil-design-swiftui/issues) rather than on his repo.
 
 ## What it is
 
@@ -46,6 +46,7 @@ The skill names match Emil's originals, so cross-references keep working. If you
 - **Kept as is:** every rule about frequency, purpose, easing, duration, origin, interruption, asymmetry and restraint, with Emil's original values.
 - **One new rule:** leave system motion alone. Sheets, navigation pushes, menus and popovers already move the way iOS users expect, and they already respect Reduce Motion. Emil's curves are for the components you build.
 - **Reframed:** some rules hold but for a different reason natively. For example, an interrupted spring hands its velocity to the new target, so springs play the role CSS transitions play on the web. A timing curve keeps running and stacks with the new one, which is why curves are the wrong choice for anything the user can reverse. Sonner's swipe-to-dismiss threshold of 0.11 px/ms is an average over the whole drag, while SwiftUI reports the release velocity, so the native threshold is 500 pt/s. A small [probe app](Examples/README.md) confirms this on a simulator. [CONVERSION.md](CONVERSION.md) lists every mapping.
+- **Native additions:** a springs-first default for anything touchable or reversible, press feedback matched to the control (scale for custom cards and tiles, system highlight or dim for rows and text buttons), a system-look section (fills, grouped lists, large titles, materials and iOS 26 glass), Apple-app benchmarks, and the unslop-ui copy, decoration, chart and surface rules.
 - **Not ported:** `animate-expo` (React Native) and `ask-sonner` (a React library). The ideas from them that apply natively live in `animate`, `gestures` and `emil-design-eng`.
 - **Unchanged:** `write-swift` was already native.
 
