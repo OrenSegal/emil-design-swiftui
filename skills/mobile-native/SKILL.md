@@ -33,7 +33,7 @@ Two failure modes, and the first is worse:
 ## Hard Rules
 
 1. **Every fix ships with the reason.** Apply each rule where its *why* applies. `.textSelection(.disabled)` is the default on controls; `.textSelection(.enabled)` on body text that users copy (addresses, error messages, order numbers) is correct.
-2. **Capability over device guessing.** The native version of "media queries over UA sniffing": read the environment (`horizontalSizeClass`, `dynamicTypeSize`, `accessibilityReduceMotion`) and the safe area. Never branch on device model or screen height to guess layout.
+2. **Capability over device guessing.** The native version of "media queries over UA sniffing": read the environment (`horizontalSizeClass`, `dynamicTypeSize`, `accessibilityReduceMotion`) and the safe area. Never branch on device model, idiom, orientation or screen height to guess layout. Choose the expanded layout with `horizontalSizeClass == .regular`: size classes are optional, so `!= .compact` treats a `nil` as roomy. When size classes pick different view hierarchies, keep selection and navigation state above the branch, because the swapped-out hierarchy loses its state. iPhone Duo makes this concrete: it reports a phone, its outer display is wide and short, its inner display is regular in both directions even in a portrait-only app, and folding resizes the scene without relaunching the app or changing `scenePhase`.
 3. **Touch and pointer coexist.** iPad with a trackpad, iPhone apps running on Mac. Write for both: press feedback that works on touch, `.hoverEffect` as a pointer extra, never hover as the only affordance.
 4. **Never cap Dynamic Type to protect a layout.** The native meaning of "never disable zoom": don't clamp `.dynamicTypeSize(...)` to stop text growing. Fix the layout instead (`ViewThatFits`, stacking, scrolling).
 5. **Test on hardware before calling it done.** Run on a real iPhone from Xcode. The Simulator can't reproduce touch latency, haptics, ProMotion, or how the keyboard and edge gestures feel.
@@ -84,7 +84,7 @@ struct EdgeToEdgeScreen: View {
 }
 ```
 
-Use `.ignoresSafeArea()` on backgrounds, never on text or controls. Use `.safeAreaInset` for custom bars and `.safeAreaPadding` / `.contentMargins` to inset scroll content, so the scroll view knows about the bar and nothing hides under it.
+Use `.ignoresSafeArea()` on backgrounds, never on text or controls. When readable or interactive content really must extend past the safe area, name the edges (`.ignoresSafeArea(edges: .top)`). Attach custom bars with `.safeAreaInset` (on iOS 26, `.safeAreaBar`, which also gives the bar the system scroll-edge effect), so the scroll view knows about the bar and nothing hides under it. Don't hard-code a bottom gap to clear the home indicator: SwiftUI already respects it and its height varies. Don't replace that gap with `.safeAreaPadding` either; `.safeAreaPadding` and `.contentMargins` add a deliberate margin on top of the safe area, so use them only when you want that extra space. On iOS 26, extend imagery behind a sidebar, inspector or vertical bar with `.backgroundExtensionEffect()` rather than `.ignoresSafeArea`, which hides part of the image under the bar.
 
 ### 2. Keyboard
 

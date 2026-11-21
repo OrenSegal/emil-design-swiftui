@@ -23,6 +23,9 @@ for s in $UPSTREAM; do
   fi
 done
 
+ruby -rjson -e 'j=JSON.parse(File.read(".claude-plugin/plugin.json")); abort "missing #{%w[name version description].reject{|k| j[k].to_s!=j[k].to_s || j[k].to_s.empty?}}" if %w[name version description].any?{|k| j[k].to_s.empty?}' 2>/dev/null || err ".claude-plugin/plugin.json missing or lacks name/version/description"
+[ -f Sources/EmilMotion/Motion.swift ] && [ -L tools/Motion.swift ] || err "tools/Motion.swift must symlink to Sources/EmilMotion/Motion.swift"
+
 for f in skills/*/SKILL.md; do
   dir=$(basename "$(dirname "$f")")
   [[ " $UPSTREAM " == *" $dir "* ]] || err "$dir is not an upstream skill (add it to UPSTREAM if intentional)"

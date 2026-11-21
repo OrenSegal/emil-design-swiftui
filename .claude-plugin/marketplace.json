@@ -1,0 +1,11 @@
+{
+  "name": "emil-design-swiftui",
+  "owner": { "name": "Oren Segal", "url": "https://github.com/OrenSegal" },
+  "plugins": [
+    {
+      "name": "emil-design-swiftui",
+      "source": "./",
+      "description": "Emil Kowalski's design-engineering skills adapted for native SwiftUI (iOS 18, Swift 6). Unofficial port of emilkowalski/skills."
+    }
+  ]
+}
