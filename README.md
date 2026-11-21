@@ -28,7 +28,14 @@ Target: iOS 18 and Swift 6. APIs newer than iOS 18, like Liquid Glass, only appe
 npx skills@latest add OrenSegal/emil-design-swiftui
 ```
 
-Or, in Claude Code, add this repo as a plugin (`.claude-plugin/plugin.json`), or copy the folders in `skills/` into `~/.claude/skills/` (or a project's `.claude/skills/`).
+Or, in Claude Code, as a plugin:
+
+```bash
+claude plugin marketplace add OrenSegal/emil-design-swiftui
+claude plugin install emil-design-swiftui@emil-design-swiftui
+```
+
+Or copy the folders in `skills/` into `~/.claude/skills/` (or a project's `.claude/skills/`).
 
 The skills use the curves, springs and press style in [`Motion.swift`](Sources/EmilMotion/Motion.swift) by name. Add this repo as a Swift package (product `EmilMotion`, iOS 18 / macOS 15), or copy that file into your app target and drop its `public`s. `xcrun swift test` runs its tests.
 

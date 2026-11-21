@@ -1,10 +1,21 @@
 {
   "name": "emil-design-swiftui",
-  "version": "1.0.0",
-  "description": "Emil Kowalski's design-engineering skills adapted for native SwiftUI (iOS 18, Swift 6). Unofficial port of emilkowalski/skills.",
-  "author": { "name": "Oren Segal", "url": "https://github.com/OrenSegal" },
-  "homepage": "https://github.com/OrenSegal/emil-design-swiftui",
-  "repository": "https://github.com/OrenSegal/emil-design-swiftui",
+  "version": "0.1.0",
+  "description": "Unofficial SwiftUI adaptation of Emil Kowalski's design-engineering and animation skills (emilkowalski/skills, MIT) for native iOS apps. Not written, reviewed or endorsed by Emil.",
+  "author": {
+    "name": "Oren Segal"
+  },
   "license": "MIT",
-  "keywords": ["swiftui", "ios", "animation", "design-engineering", "skills"]
+  "keywords": [
+    "swiftui",
+    "ios",
+    "animation",
+    "motion",
+    "design-engineering",
+    "agent-skills",
+    "unofficial"
+  ],
+  "skills": "./skills/",
+  "homepage": "https://github.com/OrenSegal/emil-design-swiftui",
+  "repository": "https://github.com/OrenSegal/emil-design-swiftui"
 }
