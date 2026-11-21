@@ -595,6 +595,8 @@ struct InsetRect: Shape {
 }
 ```
 
+With Xcode 26 or later, the `@Animatable` macro writes `animatableData` for you, and `@AnimatableIgnored` leaves a property out. It still works with an iOS 18 deployment target. The hand-written form above is the same thing spelled out.
+
 ### Tabs with perfect color transitions
 
 Duplicate the tab row. Style the copy as "active" (different background, different text color). Mask the copy so only the active tab shows, and animate the mask's position on tab change. You get a seamless color transition that timing individual color changes can never achieve. In SwiftUI, a `matchedGeometryEffect` capsule is the usual way to drive the mask:

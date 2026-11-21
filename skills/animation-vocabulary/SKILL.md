@@ -54,7 +54,7 @@ User: "The thing where one image turns into another image."
 Output:
 ```
 **Morph** — One shape smoothly turns into another shape, e.g. Dynamic Island.
-SwiftUI: a `Shape` with `animatableData`, or `matchedGeometryEffect` between the two states.
+SwiftUI: a `Shape` with `animatableData` (or the `@Animatable` macro), or `matchedGeometryEffect` between the two states.
 
 Close alternates:
 - **Crossfade** — if they simply fade over each other in the same spot. (`.transition(.opacity)` / `.contentTransition(.opacity)`)
@@ -116,7 +116,7 @@ SwiftUI: free in `ScrollView`; for a custom drag, `rubberband(_:dimension:)` in 
 | --- | --- | --- |
 | **Crossfade** | One element fades out as another fades in, in the same spot. | `.transition(.opacity)` on both, or `.contentTransition(.opacity)`; with a blur bridge `.transition(.blurReplace)` |
 | **Continuity transition** | A change that keeps the user oriented by visually connecting before and after. For example, making the same rectangle bigger and smaller. | Animate the same view's state; `matchedGeometryEffect` |
-| **Morph** | One shape smoothly turns into another shape, e.g. Dynamic Island. | `Shape` with `animatableData`; `matchedGeometryEffect` |
+| **Morph** | One shape smoothly turns into another shape, e.g. Dynamic Island. | `Shape` with `animatableData` (or `@Animatable`); `matchedGeometryEffect` |
 | **Shared element transition** | An element travels and transforms from one position into another, like a thumbnail expanding into a card. | `matchedGeometryEffect`; navigation: `.matchedTransitionSource(id:in:)` + `.navigationTransition(.zoom(sourceID:in:))` |
 | **Layout animation** | When an element's size or position changes, it animates to the new spot instead of snapping. | Default: layout changes inside `withAnimation` animate |
 | **Accordion / Collapse** | A section smoothly expands and collapses its height to show or hide content. | `DisclosureGroup`; custom: `if` + `.transition` in `withAnimation` |

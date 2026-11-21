@@ -35,7 +35,9 @@ claude plugin marketplace add OrenSegal/emil-design-swiftui
 claude plugin install emil-design-swiftui@emil-design-swiftui
 ```
 
-Or copy the folders in `skills/` into `~/.claude/skills/` (or a project's `.claude/skills/`). Then copy [`tools/Motion.swift`](tools/Motion.swift) into your app target. The skills use its curves, springs and press style by name.
+Or copy the folders in `skills/` into `~/.claude/skills/` (or a project's `.claude/skills/`).
+
+The skills use the curves, springs and press style in [`Motion.swift`](Sources/EmilMotion/Motion.swift) by name. Add this repo as a Swift package (product `EmilMotion`, iOS 18 / macOS 15), or copy that file into your app target and drop its `public`s. `xcrun swift test` runs its tests.
 
 The skill names match Emil's originals, so cross-references keep working. If you already have the web versions installed, install these into a project folder instead, or remove the web ones first.
 

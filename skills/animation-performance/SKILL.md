@@ -208,6 +208,7 @@ Look for:
 
 - A drag or scroll offset in an `@Observable` model, `@EnvironmentObject`, or the environment, read by a whole screen.
 - An `ObservableObject` with `@Published` per-frame values: every view observing it re-evaluates, not just the ones reading that property. `@Observable` tracks per property, which helps, but only if per-frame values are read by few views.
+- A per-frame value written to the environment. Every environment write makes SwiftUI check the subtree below it, even views that never read the value. If many views need something derived from it, keep the raw value in an `@Observable` model and store the derived result (`hasReachedEnd`) as its own property, so readers update only when it changes. Deriving the Boolean inside `body` still subscribes the view to every raw change.
 - A `Timer.publish` or `Timer` writing `@State` at 60Hz high in the tree. For clocks and continuous motion, use `TimelineView(.animation)` around just the view that changes.
 
 **The SwiftUI version of Vaul's CSS-variable trap:** Vaul's drag got laggy as the drawer filled up, because the drag distance was written where every child depended on it (web-origin anecdote). Native symptom: a drag gets slower as the screen gains content, with Instruments showing many `body` evaluations per frame. Cause: the drag value lives in a parent or the environment. Fix: `@GestureState` in the dragged view, as above.
@@ -259,6 +260,8 @@ The web says "virtualize". SwiftUI already does it:
 - `List` reuses rows. `LazyVStack` / `LazyVGrid` create rows only when they scroll near the screen. A plain `VStack` in a `ScrollView` builds every row up front.
 - Give rows stable identity (`id:` from your model, never `\.self` on mutable values or `indices` of a collection that changes), or SwiftUI can't tell rows apart and rebuilds them.
 - Keep row `body` cheap: no formatting, sorting, or image decoding inside it.
+- Pass each row its element (`Row(item: item)`), not the store plus an id. A row that looks itself up depends on the whole collection, so one change re-runs every row. Create per-row models once, not inside `body` or the `ForEach` closure.
+- Make each `ForEach` element produce the same kind and number of views every time. An `if`, `if`/`else` or `switch` at the top of a row makes SwiftUI run every row's `body` on each update to work out identity. Filter the collection before `ForEach`, or wrap the branch in a `VStack` (a `Group` doesn't count). Launch with `-LogForEachSlowPath YES` to log the `ForEach`es that hit this.
 - Don't put a per-row `GeometryReader` writing state into a lazy stack. Use `onGeometryChange` or `scrollTransition`.
 
 ## Should You Drop to Core Animation?
