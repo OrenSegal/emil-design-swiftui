@@ -43,7 +43,7 @@ A lookup skill. When invoked with a task ("I need a bottom sheet", "what should 
 
 | Task | First-party answer |
 | --- | --- |
-| General-purpose animation (springs, layout animations, enter/exit) | SwiftUI's own animation system: `withAnimation` / `.animation(_:value:)` with springs, `.transition` for enter and exit, `matchedGeometryEffect` and `.navigationTransition(.zoom(...))` for shared elements, `keyframeAnimator` / `phaseAnimator` for fixed sequences. House curves in `tools/Motion.swift` |
+| General-purpose animation (springs, layout animations, enter/exit) | SwiftUI's own animation system: `withAnimation` / `.animation(_:value:)` with springs, `.transition` for enter and exit, `matchedGeometryEffect` and `.navigationTransition(.zoom(...))` for shared elements, `keyframeAnimator` / `phaseAnimator` for fixed sequences. House curves in [`tools/Motion.swift`](https://raw.githubusercontent.com/OrenSegal/emil-design-swiftui/main/tools/Motion.swift) |
 | Animating numbers (counters, prices, stats) | `.contentTransition(.numericText(value:))` with `.monospacedDigit()`, changed inside `withAnimation` |
 | Animated text components | No first-party component; see the flag table |
 | 3D globes | No first-party component; see the flag table |

@@ -19,7 +19,7 @@ How Apple builds interfaces that stop feeling like a computer and start feeling 
 
 The through-line: **an interface feels alive when motion starts from the current on-screen value, inherits the user's velocity, projects momentum forward, and can be grabbed and reversed at any instant.** Springs make all of this natural, because they're inherently interruptible and velocity-aware. On iOS you don't need a library for any of it.
 
-Shared tokens (`Spring.emilUI`, `Spring.emilMomentum`, `.buttonStyle(.pressable)`, `project(velocity:)`, `rubberband(_:dimension:)`) live in `tools/Motion.swift`. For building specific drags, sheets, and haptics, see `../gestures/SKILL.md`.
+Shared tokens (`Spring.emilUI`, `Spring.emilMomentum`, `.buttonStyle(.pressable)`, `project(velocity:)`, `rubberband(_:dimension:)`) live in [`tools/Motion.swift`](https://raw.githubusercontent.com/OrenSegal/emil-design-swiftui/main/tools/Motion.swift). For building specific drags, sheets, and haptics, see `../gestures/SKILL.md`.
 
 ## The Core Idea
 
