@@ -1,6 +1,7 @@
 ---
 name: break-ui
 description: "Try to break a SwiftUI view by feeding it worst-case data (long names, unbreakable emails, one-letter names, missing fields, huge counts, zero items, long labels, non-Latin text, emoji, extreme numbers) and worst-case environments (accessibility Dynamic Type sizes, RTL, Bold Text, Increase Contrast, Reduce Transparency, long translations, narrow iPad split widths, landscape, VoiceOver order). Renders it behind a debug-only \"Demo / Worst case\" fixture switcher and #Preview matrix, then reports everything that broke, with the SwiftUI fix for each. Use when the user asks to stress-test, break, or find edge cases in an iOS view or screen, or to \"try the worst case\". For visual design critique use emil-design-eng; for motion use review-animations."
+model: sonnet
 ---
 
 # Breaking UI

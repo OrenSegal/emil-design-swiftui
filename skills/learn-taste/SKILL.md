@@ -2,6 +2,7 @@
 name: learn-taste
 description: Turn a session's SwiftUI design corrections into rules, with their why, in DESIGN.md, a project skill, or a check (a SwiftLint custom rule or a grep script) for an iOS codebase.
 disable-model-invocation: true
+model: sonnet
 ---
 
 # Learning Taste

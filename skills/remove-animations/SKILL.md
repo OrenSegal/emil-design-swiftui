@@ -1,6 +1,7 @@
 ---
 name: remove-animations
 description: Find the animations an iOS app doesn't need and remove them from SwiftUI/UIKit code — custom motion on keyboard-shortcut actions, high-frequency surfaces, functional data, decoration with no purpose, and custom motion layered on system navigation and presentation — then clean up what they leave behind (hidden start states, completion handlers, sleeps sized to durations). Edits code, but only to subtract; it never adds or retunes motion. Use when the user says the app "feels slow", "has too much animation", "feels over-animated", wants to "tone down the motion", or asks what animations to remove. For finding places that should animate, use find-animation-opportunities; for fixing animations that should stay, use improve-animations or review-animations.
+model: sonnet
 ---
 
 # Removing Animations

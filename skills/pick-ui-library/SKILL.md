@@ -2,6 +2,7 @@
 name: pick-ui-library
 description: Pick the first-party SwiftUI or Apple framework component for an iOS UI task, working through the task list from Emil Kowalski's curated web picks (primitives, toasts, drawers and sheets, command menus, OTP, animated numbers, charts, long lists, drag and drop, state, styling, theming), and say plainly when there is no first-party answer.
 disable-model-invocation: true
+model: sonnet
 ---
 
 # Picking The Right Component
